@@ -52,4 +52,4 @@ async function autenticar(e) {
     areaMensagem.style = "color:red";
     areaMensagem.innerHTML = error;
   }
-}
+}git
