@@ -19,7 +19,7 @@ import { verificarAutenticacao } from './autorizar.js';
 
     // Altera o estilo do elemento 'conteudo' para 'block', tornando o conteúdo visível
     conteudo.style.display = 'block';
-  } 
+  }
 })();
 
 
@@ -33,7 +33,23 @@ tabelaCorpo.innerHTML = 'Aguarde...';
 try {
   const endpoint = '/usuario';
   const urlFinal = urlBase + endpoint;
-  const response = await fetch(urlFinal);
+
+  const token = localStorage.getItem('jwt');
+
+  // Verifica se o token existe; se não, lança um erro para ser capturado no catch
+  if (!token) {
+    throw new Error("Token não encontrado");
+  }
+
+  const response = await fetch(urlFinal, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': token
+    }
+  });
+
+
 
   if (!response.ok) {
     throw new Error("Erro na requisição: " + response.status);
@@ -85,7 +101,7 @@ async function excluirUsuario(id) {
     if (!response.ok) {
       throw new Error(`Erro na requisição: ${response.status}`);
     }
-    
+
     alert('Usuário excluido com sucesso!');
 
   } catch (error) {
